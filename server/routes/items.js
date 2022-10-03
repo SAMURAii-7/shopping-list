@@ -4,17 +4,17 @@ const verify = require("./verifyToken");
 
 const router = express.Router();
 
-router.post("/", verify, async (req, res) => {
+router.get("/", verify, async (req, res) => {
+    const item = await Item.find({ user_id: req.user._id });
+    res.send(item);
+});
+
+router.post("/create", verify, async (req, res) => {
     const item = await Item.create({
         user_id: req.user._id,
         name: req.body.name,
         quantity: req.body.quantity,
     });
-    res.send(item);
-});
-
-router.get("/", verify, async (req, res) => {
-    const item = await Item.find({ user_id: req.user._id });
     res.send(item);
 });
 

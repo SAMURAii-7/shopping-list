@@ -16,12 +16,15 @@ app.use(express.urlencoded({ extended: false }));
 app.use("/api/items", itemsRoute);
 app.use("/api/auth", authRoute);
 
-app.listen(8080);
+const port = process.env.PORT || 8080;
+app.listen(port, () => {
+    console.log(`Server running on port ${port}...`);
+});
 
 app.get("/api", (req, res) => {
     res.send("Welcome to the server!");
 });
 
 mongoose.connect("mongodb://localhost:27017/shopping", () =>
-    console.log("connected")
+    console.log("DB connected")
 );
