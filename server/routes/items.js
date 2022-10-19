@@ -5,12 +5,13 @@ const verify = require("./verifyToken");
 const router = express.Router();
 
 router.get("/", verify, async (req, res) => {
-    const item = await Item.find({ user_id: req.user._id });
+    const item = await Item.find({ user_id: req.query.user_id });
     res.send(item);
 });
 
 router.post("/create", verify, async (req, res) => {
     const item = await Item.create({
+        _id: req.body._id,
         user_id: req.user._id,
         name: req.body.name,
         quantity: req.body.quantity,

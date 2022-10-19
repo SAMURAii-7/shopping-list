@@ -6,15 +6,21 @@ require("dotenv").config();
 //import routes
 const itemsRoute = require("./routes/items");
 const authRoute = require("./routes/auth");
+const userRoute = require("./routes/user");
 
 const app = express();
 
-app.use(cors());
+app.use(
+    cors({
+        origin: "*",
+    })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
 app.use("/api/items", itemsRoute);
 app.use("/api/auth", authRoute);
+app.use("/api/user", userRoute);
 
 const port = process.env.PORT || 8080;
 app.listen(port, () => {
