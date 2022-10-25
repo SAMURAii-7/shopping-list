@@ -13,7 +13,11 @@ const verify = require("./routes/verifyToken");
 
 const app = express();
 
-app.options("*", cors());
+app.use(
+    cors({
+        origin: "https://shopping-list-ui.onrender.com/",
+    })
+);
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
