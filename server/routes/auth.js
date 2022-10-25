@@ -63,14 +63,14 @@ router.post("/login", async (req, res) => {
                 process.env.ACCESS_TOKEN_SECRET
             );
 
-            User.findOne({ email: req.body.email }).then((user) =>
+            User.findOne({ email: req.body.email }).then((user) => {
                 res.json({
                     _id: user._id,
                     name: user.name,
                     email: user.email,
                     accessToken: accessToken,
-                })
-            );
+                });
+            });
         } else {
             res.send("Email or password is wrong");
         }

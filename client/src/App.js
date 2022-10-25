@@ -1,16 +1,19 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
 import Home from "./pages/Home";
 import Dashboard from "./pages/Dashboard";
+import NotFound from "./pages/NotFound";
+import Cookie from "universal-cookie";
+import Selected from "./pages/Selected";
 
 function App() {
     function getUserDetails(data) {
-        localStorage.setItem("name", data.name);
-        localStorage.setItem("authToken", data.accessToken);
-        localStorage.setItem("userId", data._id);
-    }
+        let date = new Date();
+        date.setDate(date.getDate() + 30);
 
-    function getAuthToken(data) {
-        localStorage.setItem("authToken", data);
+        const cookies = new Cookie();
+        cookies.set("name", data.name, { expires: date });
+        cookies.set("authToken", data.accessToken, { expires: date });
+        cookies.set("userId", data._id, { expires: date });
     }
 
     return (
@@ -19,14 +22,11 @@ function App() {
                 <Route
                     exact
                     path="/"
-                    element={
-                        <Home
-                            getAuthToken={getAuthToken}
-                            getUserDetails={getUserDetails}
-                        />
-                    }
+                    element={<Home getUserDetails={getUserDetails} />}
                 />
                 <Route exact path="/dashboard" element={<Dashboard />} />
+                <Route exact path="/selected" element={<Selected />} />
+                <Route exact path="/*" element={<NotFound />} />
             </Routes>
         </Router>
     );

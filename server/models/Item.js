@@ -17,6 +17,10 @@ const itemSchema = new mongoose.Schema({
         type: String,
         required: false,
     },
+    isSelected: {
+        type: Boolean,
+        required: true,
+    },
 });
 
 module.exports = mongoose.model("Item", itemSchema);

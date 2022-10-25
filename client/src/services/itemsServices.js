@@ -16,10 +16,21 @@ export async function createItem(item, authToken) {
     return res.status;
 }
 
-export function updateItem(item) {
-    return axios.put(`${apiUrl}/items/${item._id}`, item);
+export function updateItem(item, authToken) {
+    return axios.put(`${apiUrl}/items/${item._id}`, item, {
+        headers: { authorization: "Bearer " + authToken },
+    });
 }
 
-export function deleteItem(id) {
-    return axios.delete(`${apiUrl}/items/${id}`);
+export function deleteItem(id, authToken) {
+    return axios.delete(`${apiUrl}/items/${id}`, {
+        headers: { authorization: "Bearer " + authToken },
+    });
+}
+
+export async function exportItems(items, authToken) {
+    const res = await axios.post(`${apiUrl}/export`, items, {
+        headers: { authorization: "Bearer " + authToken },
+    });
+    return res.data;
 }

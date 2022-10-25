@@ -15,6 +15,7 @@ router.post("/create", verify, async (req, res) => {
         user_id: req.user._id,
         name: req.body.name,
         quantity: req.body.quantity,
+        isSelected: req.body.isSelected,
     });
     res.send(item);
 });
@@ -26,7 +27,7 @@ router.put("/:id", verify, async (req, res) => {
 });
 
 router.delete("/:id", verify, async (req, res) => {
-    const item = await Item.findByAndDelete(req.params.id);
+    const item = await Item.findByIdAndDelete(req.params.id);
     res.send(item);
 });
 
