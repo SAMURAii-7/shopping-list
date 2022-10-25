@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiUrl = "http://localhost:8080/api";
+const apiUrl = "https://shopping-list-tswh.onrender.com/api";
 
 export async function login(email, password) {
     const res = await axios.post(`${apiUrl}/auth/login`, { email, password });
