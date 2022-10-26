@@ -364,6 +364,10 @@ nav ul li {
 @media (max-width: 900px) {
     .title {
         font-size: 3rem;
+        margin: 2rem;
+    }
+    body {
+        padding-top: 0;
     }
     .container {
         width: 300px;
