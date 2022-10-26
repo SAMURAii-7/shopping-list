@@ -59,7 +59,7 @@ function Home({ getUserDetails }) {
     }
 
     return typeof cookies.get("authToken") == "undefined" ? (
-        <>
+        <div className="home-wrapper">
             <h1 className="title">Shopping List</h1>
             <div className="container">
                 <div className="loginDiv">
@@ -123,7 +123,7 @@ function Home({ getUserDetails }) {
                     </form>
                 </div>
             </div>
-        </>
+        </div>
     ) : (
         <Navigate to="/dashboard" />
     );
