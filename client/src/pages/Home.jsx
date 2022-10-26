@@ -28,24 +28,34 @@ function Home({ getUserDetails }) {
 
     async function handleLoginSubmit(e) {
         e.preventDefault();
-        const isLoggedIn = await login(loginData.email, loginData.password);
-        if (isLoggedIn.status >= 200 && isLoggedIn.status < 300) {
-            getUserDetails(isLoggedIn.data);
-            navigate("/dashboard");
-        } else alert("Login failed");
+        try {
+            const isLoggedIn = await login(loginData.email, loginData.password);
+            if (isLoggedIn.status >= 200 && isLoggedIn.status < 300) {
+                getUserDetails(isLoggedIn.data);
+                navigate("/dashboard");
+            }
+        } catch (err) {
+            alert("Email or Password incorrect! Please try again.");
+        }
+        setLoginData({ email: "", password: "" });
     }
 
     async function handleSignupSubmit(e) {
         e.preventDefault();
-        const isSignedUp = await signup(
-            signupData.name,
-            signupData.email,
-            signupData.password
-        );
-        if (isSignedUp.status >= 200 && isSignedUp.status < 300) {
-            getUserDetails(isSignedUp.data);
-            navigate("/dashboard");
-        } else alert("Signup failed");
+        try {
+            const isSignedUp = await signup(
+                signupData.name,
+                signupData.email,
+                signupData.password
+            );
+            if (isSignedUp.status >= 200 && isSignedUp.status < 300) {
+                getUserDetails(isSignedUp.data);
+                navigate("/dashboard");
+            }
+        } catch (err) {
+            alert("Signup failed, Please try again!");
+        }
+        setSignupData({ name: "", email: "", password: "" });
     }
 
     return typeof cookies.get("authToken") == "undefined" ? (
