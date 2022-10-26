@@ -27,5 +27,5 @@ yarn run start
 ### For running the server locally
 
 ```
-yarn run devStart
+yarn run start
 ```
