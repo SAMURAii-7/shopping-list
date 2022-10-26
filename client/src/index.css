@@ -263,6 +263,7 @@ nav ul li {
 .link {
     text-decoration: none;
     font-family: "Open Sans", sans-serif;
+    text-align: center;
     font-weight: 800;
     color: black;
     background-color: #fff;
@@ -358,4 +359,73 @@ nav ul li {
     margin-bottom: 2rem;
     margin-top: 1rem;
     text-align: center;
+}
+
+@media (max-width: 900px) {
+    .title {
+        font-size: 3rem;
+    }
+    .container {
+        width: 300px;
+        flex-direction: column;
+    }
+    .wrapper {
+        width: 400px;
+    }
+    .divider {
+        flex-direction: row;
+    }
+    .divider1,
+    .divider2 {
+        border-left: none;
+        border-top: 1px solid rgb(182, 175, 175);
+        height: 0;
+        width: 5rem;
+    }
+    .dashboardHeader {
+        width: 400px;
+    }
+    .siteName {
+        font-size: 1.3rem;
+    }
+    .link {
+        font-size: 11px;
+        padding: 5px;
+    }
+    nav ul li {
+        margin: 3px;
+        margin-bottom: 10px;
+    }
+    .welcome {
+        font-size: 2rem;
+    }
+    .addItem {
+        flex-direction: column;
+        width: 350px;
+    }
+    .itemsListHeader {
+        font-size: 1.8rem;
+    }
+    .items-list {
+        width: 400px;
+    }
+    .item {
+        width: 350px;
+    }
+    .selected-div {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        width: 350px;
+        justify-content: space-evenly;
+    }
+    .selected-link {
+        text-align: center;
+        font-size: 14px;
+        font-weight: 600;
+        padding: 5px 5px;
+        margin: 5px;
+    }
+    .selected-title {
+        font-size: 2.5rem;
+    }
 }
