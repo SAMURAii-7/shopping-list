@@ -115,7 +115,7 @@ function Dashboard() {
     };
 
     const deselectAll = () => {
-        const updatedItems = items.map((item) => {
+        const updatedItems = newItems.map((item) => {
             item.isSelected = false;
             updateItem(item, cookies.get("authToken")).then((res) => {
                 item = res.data;
