@@ -115,12 +115,13 @@ function Dashboard() {
     };
 
     const deselectAll = () => {
-        const updatedItems = newItems.map((item) => {
-            item.isSelected = false;
-            updateItem(item, cookies.get("authToken")).then((res) => {
-                item = res.data;
-            });
-
+        const updatedItems = items.map((item) => {
+            if (item.isSelected) {
+                item.isSelected = false;
+                updateItem(item, cookies.get("authToken")).then((res) => {
+                    item = res.data;
+                });
+            }
             return item;
         });
         setItems(updatedItems);
