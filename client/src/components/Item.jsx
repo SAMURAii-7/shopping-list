@@ -1,8 +1,6 @@
 import { FaEdit, FaTimes, FaPlus, FaMinus } from "react-icons/fa";
-import { useState } from "react";
 import { updateItem } from "../services/itemsServices";
 import Cookies from "universal-cookie";
-import { useEffect } from "react";
 
 function Item({
     item,
@@ -13,28 +11,26 @@ function Item({
 }) {
     const cookies = new Cookies();
 
-    const [isClicked, setIsClicked] = useState(false);
+    // const [isClicked, setIsClicked] = useState(false);
 
-    useEffect(() => {
-        if (item.isSelected) {
-            setIsClicked(true);
-        }
-        // eslint-disable-next-line
-    }, []);
+    // useEffect(() => {
+    //     if (item.isSelected) {
+    //         setIsClicked(true);
+    //     }
+    //     // eslint-disable-next-line
+    // }, []);
 
     const handleAdd = async (item) => {
-        item.isSelected = !isClicked;
+        item.isSelected = true;
         const res = await updateItem(item, cookies.get("authToken"));
         item = res.data;
-        setIsClicked(!isClicked);
         handleNewListAdd(item);
     };
 
     const handleRemove = async (item) => {
-        item.isSelected = !isClicked;
+        item.isSelected = false;
         const res = await updateItem(item, cookies.get("authToken"));
         item = res.data;
-        setIsClicked(!isClicked);
         handleNewListRemove(item);
     };
 
