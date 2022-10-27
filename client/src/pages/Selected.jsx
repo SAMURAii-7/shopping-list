@@ -1,12 +1,17 @@
 import React from "react";
 import NavBar from "../components/NavBar";
-import { useLocation } from "react-router-dom";
+import { Navigate, useLocation } from "react-router-dom";
 
 const Selected = () => {
     const location = useLocation();
-    const items = location.state.newItems;
+    let items;
+    if (location.state !== null) {
+        items = location.state.newItems;
+    }
 
-    return (
+    return location.state === null ? (
+        <Navigate to="/dashboard" />
+    ) : (
         <div className="wrapper">
             <NavBar />
             <div className="selected-wrapper">
