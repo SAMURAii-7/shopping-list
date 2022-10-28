@@ -314,6 +314,14 @@ nav ul li {
     color: rgb(59, 13, 106);
 }
 
+.error .link {
+    background-color: rgb(59, 13, 106);
+    color: #fff;
+}
+.error .link:hover {
+    background-color: rgb(91, 48, 131);
+}
+
 .delete,
 .edit,
 .add {
@@ -440,5 +448,12 @@ nav ul li {
     }
     .selected-title {
         font-size: 2.5rem;
+    }
+    .error {
+        width: 400px;
+    }
+    .error h1,
+    .error p {
+        font-size: 30px;
     }
 }
