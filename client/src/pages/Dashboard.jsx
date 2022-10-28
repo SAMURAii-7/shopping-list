@@ -12,6 +12,7 @@ import { Link } from "react-router-dom";
 import Restricted from "./Restricted";
 import ItemList from "../components/ItemList";
 import NavBar from "../components/NavBar";
+import SearchBar from "../components/SearchBar";
 
 function Dashboard() {
     const [items, setItems] = useState([]);
@@ -20,7 +21,26 @@ function Dashboard() {
     const [itemId, setItemId] = useState("");
     const [isEdit, setIsEdit] = useState(false);
     const [newItems, setNewItems] = useState([]);
+    const [searchedItem, setSearchedItem] = useState({});
     const cookies = new Cookies();
+
+    const handleSearch = (item) => {
+        if (!item.name && searchedItem.name) {
+            setItems(
+                [...items, searchedItem].sort((a, b) =>
+                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                )
+            );
+        } else {
+            const updatedItems = items.filter((i) => i._id !== item._id);
+            setItems(
+                updatedItems.sort((a, b) =>
+                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                )
+            );
+        }
+        setSearchedItem(item);
+    };
 
     const handleNewItem = async (e) => {
         e.preventDefault();
@@ -34,7 +54,11 @@ function Dashboard() {
         const res = await createItem(newItem, cookies.get("authToken"));
         setItemName("");
         setItemQuantity("");
-        setItems([...items, newItem]);
+        setItems(
+            [...items, newItem].sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+            )
+        );
         if (res >= 400) alert("Error creating item");
     };
 
@@ -46,7 +70,13 @@ function Dashboard() {
     };
 
     const handleDelete = async (id) => {
-        setItems(items.filter((item) => item._id !== id));
+        setItems(
+            items
+                .filter((item) => item._id !== id)
+                .sort((a, b) =>
+                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                )
+        );
         await deleteItem(id, cookies.get("authToken"));
     };
 
@@ -63,11 +93,21 @@ function Dashboard() {
                     (t) => t.name === v.name && t.quantity === v.quantity
                 ) === i
         );
-        setNewItems([...unique]);
+        setNewItems(
+            [...unique].sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+            )
+        );
     };
 
     const handleNewListRemove = (item) => {
-        setNewItems(newItems.filter((i) => i._id !== item._id));
+        setNewItems(
+            newItems
+                .filter((i) => i._id !== item._id)
+                .sort((a, b) =>
+                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                )
+        );
     };
 
     const editItem = (e) => {
@@ -80,9 +120,14 @@ function Dashboard() {
                     item = res.data;
                 });
             }
+            if (searchedItem._id === item._id) setSearchedItem(item);
             return item;
         });
-        setItems(updatedItems);
+        setItems(
+            updatedItems.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+            )
+        );
         setItemName("");
         setItemQuantity("");
         setItemId("");
@@ -95,8 +140,18 @@ function Dashboard() {
                 cookies.get("authToken"),
                 cookies.get("userId")
             );
-            setItems(res);
-            setNewItems(res.filter((item) => item.isSelected));
+            setItems(
+                res.sort((a, b) =>
+                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                )
+            );
+            setNewItems(
+                res
+                    .filter((item) => item.isSelected)
+                    .sort((a, b) =>
+                        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                    )
+            );
         }
         getItemsList();
         // eslint-disable-next-line
@@ -110,8 +165,16 @@ function Dashboard() {
             });
             return item;
         });
-        setItems(updatedItems);
-        setNewItems(updatedItems);
+        setItems(
+            updatedItems.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+            )
+        );
+        setNewItems(
+            updatedItems.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+            )
+        );
     };
 
     const deselectAll = () => {
@@ -124,7 +187,11 @@ function Dashboard() {
             }
             return item;
         });
-        setItems(updatedItems);
+        setItems(
+            updatedItems.sort((a, b) =>
+                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+            )
+        );
         setNewItems([]);
     };
 
@@ -185,6 +252,18 @@ function Dashboard() {
                         </button>
                     )}
                 </form>
+                <SearchBar data={items} handleSearch={handleSearch} />
+                {searchedItem.name && (
+                    <div className="showResults">
+                        <ItemList
+                            items={[searchedItem]}
+                            handleNewListRemove={handleNewListRemove}
+                            handleEdit={handleEdit}
+                            handleNewListAdd={handleNewListAdd}
+                            itemListHeading="Search Results"
+                        />
+                    </div>
+                )}
                 {newItems.length > 0 && (
                     <div className="selected-div">
                         <Link
@@ -220,6 +299,7 @@ function Dashboard() {
                     handleEdit={handleEdit}
                     handleNewListAdd={handleNewListAdd}
                     items={items}
+                    itemListHeading="Your Items"
                 />
             </div>
         </div>

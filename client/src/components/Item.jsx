@@ -11,15 +11,6 @@ function Item({
 }) {
     const cookies = new Cookies();
 
-    // const [isClicked, setIsClicked] = useState(false);
-
-    // useEffect(() => {
-    //     if (item.isSelected) {
-    //         setIsClicked(true);
-    //     }
-    //     // eslint-disable-next-line
-    // }, []);
-
     const handleAdd = async (item) => {
         item.isSelected = true;
         const res = await updateItem(item, cookies.get("authToken"));
@@ -53,12 +44,14 @@ function Item({
                 <button onClick={() => handleEdit(item)} className="edit">
                     <FaEdit color="rebeccapurple" />
                 </button>
-                <button
-                    onClick={() => handleDelete(item._id)}
-                    className="delete"
-                >
-                    <FaTimes color="rebeccapurple" />
-                </button>
+                {handleDelete !== undefined && (
+                    <button
+                        onClick={() => handleDelete(item._id)}
+                        className="delete"
+                    >
+                        <FaTimes color="rebeccapurple" />
+                    </button>
+                )}
             </div>
         </div>
     );

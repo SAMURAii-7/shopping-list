@@ -6,10 +6,11 @@ const ItemList = ({
     handleDelete,
     handleNewListAdd,
     handleNewListRemove,
+    itemListHeading,
 }) => {
     return (
         <div className="items-list">
-            <h2 className="itemsListHeader">Your Items</h2>
+            <h2 className="itemsListHeader">{itemListHeading}</h2>
             {typeof items === "undefined" || items.length === 0 ? (
                 <p>No items found</p>
             ) : (
