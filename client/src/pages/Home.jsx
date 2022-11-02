@@ -67,6 +67,7 @@ function Home({ getUserDetails }) {
                         className="loginForm"
                         onSubmit={(e) => handleLoginSubmit(e)}
                     >
+                        <p>Login</p>
                         <input
                             placeholder="Email"
                             onChange={(e) => handleLoginChange(e)}
@@ -96,6 +97,7 @@ function Home({ getUserDetails }) {
                         className="signupForm"
                         onSubmit={(e) => handleSignupSubmit(e)}
                     >
+                        <p>Signup</p>
                         <input
                             placeholder="Name"
                             onChange={(e) => handleSignupChange(e)}
