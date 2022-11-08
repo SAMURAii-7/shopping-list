@@ -346,6 +346,11 @@ nav ul li {
     margin: 3px;
 }
 
+.item-details > h3 {
+    max-width: 300px;
+    white-space: wrap;
+}
+
 .selected-div {
     display: flex;
     flex-direction: row;
@@ -522,5 +527,8 @@ nav ul li {
     .error h1,
     .error p {
         font-size: 30px;
+    }
+    .item-details > h3 {
+        max-width: 150px;
     }
 }
