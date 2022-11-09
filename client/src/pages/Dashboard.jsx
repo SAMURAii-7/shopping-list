@@ -112,22 +112,29 @@ function Dashboard() {
 
     const editItem = (e) => {
         e.preventDefault();
-        const updatedItems = items.map((item) => {
-            if (item._id === itemId) {
-                item.name = itemName;
-                item.quantity = itemQuantity;
-                updateItem(item, cookies.get("authToken")).then((res) => {
-                    item = res.data;
-                });
-            }
-            if (searchedItem._id === item._id) setSearchedItem(item);
-            return item;
-        });
-        setItems(
-            updatedItems.sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
+        if (searchedItem.name) {
+            searchedItem.name = itemName;
+            searchedItem.quantity = itemQuantity;
+            updateItem(searchedItem, cookies.get("authToken")).then((res) => {
+                setSearchedItem(res.data);
+            });
+        } else {
+            const updatedItems = items.map((item) => {
+                if (item._id === itemId) {
+                    item.name = itemName;
+                    item.quantity = itemQuantity;
+                    updateItem(item, cookies.get("authToken")).then((res) => {
+                        item = res.data;
+                    });
+                }
+                return item;
+            });
+            setItems(
+                updatedItems.sort((a, b) =>
+                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
+                )
+            );
+        }
         setItemName("");
         setItemQuantity("");
         setItemId("");
