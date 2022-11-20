@@ -451,15 +451,20 @@ nav ul li {
 @media (max-width: 900px) {
     .title {
         font-size: 3rem;
-        margin: 2rem;
+        margin: 1rem;
     }
     body {
         padding-top: 0;
     }
     .container {
+        padding: 0;
         width: 300px;
         flex-direction: column;
         margin-top: 0;
+    }
+    .loginForm,
+    .signupForm {
+        padding: 1rem;
     }
     .wrapper {
         width: 400px;
