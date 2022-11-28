@@ -1,4 +1,4 @@
-# A MERN stack web application to store items, create shopping lists and export them as a CSV file.
+# A MERN stack progressive web application to store items, create shopping lists and export them as a CSV file.
 
 ## Installation
 
