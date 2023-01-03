@@ -1,6 +1,6 @@
 import { login, signup } from "../services/authServices";
 import { useState } from "react";
-import { Navigate, useNavigate } from "react-router-dom";
+import { Link, Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
 
 function Home({ getUserDetails }) {
@@ -85,6 +85,7 @@ function Home({ getUserDetails }) {
                         <button className="btn" type="submit">
                             Log In
                         </button>
+                        <Link to="/forgot">Forgot Password</Link>
                     </form>
                 </div>
                 <div className="divider">

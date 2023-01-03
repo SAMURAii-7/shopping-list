@@ -20,3 +20,17 @@ export async function signup(name, email, password) {
         return res;
     } else return signUpRes.status;
 }
+
+export async function forgotPassword(email) {
+    const res = await axios.post(`${apiUrl}/auth/forgot-password`, { email });
+    return res;
+}
+
+export async function resetPassword(id, token, password) {
+    const res = await axios.post(`${apiUrl}/auth/reset-password`, {
+        id,
+        token,
+        password,
+    });
+    return res;
+}

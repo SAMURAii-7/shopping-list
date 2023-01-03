@@ -3,6 +3,7 @@ const User = require("../models/User");
 const joi = require("joi");
 const bcrypt = require("bcrypt");
 const jwt = require("jsonwebtoken");
+const sendEmail = require("../mail");
 
 //validation
 const registerSchema = joi.object({
@@ -75,6 +76,44 @@ router.post("/login", async (req, res) => {
             res.status(400).send("Email or password is wrong");
         }
     });
+});
+
+router.post("/forgot-password", async (req, res) => {
+    const { email } = req.body;
+
+    //check if email exists
+    const user = await User.findOne({ email: email });
+    if (!user) res.status(400).send("Email or password is wrong");
+
+    //if user exists
+    const secret = process.env.RESET_PASSWORD_SECRET + user.password;
+    const payload = {
+        email: user.email,
+        id: user._id,
+    };
+
+    const token = jwt.sign(payload, secret, { expiresIn: "15m" });
+    const link = `http://localhost:3000/reset-password/${user._id}/${token}`;
+    sendEmail(email, link);
+    res.status(200).send("Password reset link has been sent to your email");
+});
+
+router.post("/reset-password", async (req, res) => {
+    const { id, token } = req.body;
+    const user = await User.findOne({ _id: id });
+    if (!user) res.status(401).send("Invalid user id");
+    const secret = process.env.RESET_PASSWORD_SECRET + user.password;
+    try {
+        const payload = jwt.verify(token, secret);
+        const { password } = req.body;
+        const salt = await bcrypt.genSalt(10);
+        const hashPassword = await bcrypt.hash(password, salt);
+        user.password = hashPassword;
+        await user.save();
+        res.status(200).send("Password Reset Done");
+    } catch (err) {
+        res.status(401).send("Invalid token");
+    }
 });
 
 module.exports = router;

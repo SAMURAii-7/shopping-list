@@ -4,6 +4,8 @@ import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Cookie from "universal-cookie";
 import Selected from "./pages/Selected";
+import Forgot from "./pages/Forgot";
+import Reset from "./pages/Reset";
 
 function App() {
     function getUserDetails(data) {
@@ -26,6 +28,12 @@ function App() {
                 />
                 <Route exact path="/dashboard" element={<Dashboard />} />
                 <Route exact path="/selected" element={<Selected />} />
+                <Route exact path="/forgot" element={<Forgot />} />
+                <Route
+                    exact
+                    path="reset-password/:id/:token"
+                    element={<Reset />}
+                />
                 <Route exact path="/*" element={<NotFound />} />
             </Routes>
         </Router>
