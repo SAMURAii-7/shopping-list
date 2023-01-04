@@ -93,7 +93,7 @@ router.post("/forgot-password", async (req, res) => {
     };
 
     const token = jwt.sign(payload, secret, { expiresIn: "15m" });
-    const link = `http://localhost:3000/reset-password/${user._id}/${token}`;
+    const link = `https://create-shopping-list.vercel.app/reset-password/${user._id}/${token}`;
     sendEmail(email, link);
     res.status(200).send("Password reset link has been sent to your email");
 });
