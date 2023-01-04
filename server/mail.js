@@ -1,23 +1,30 @@
-const sgMail = require("@sendgrid/mail");
+const nodemailer = require("nodemailer");
 
 function sendEmail(email, link) {
-    sgMail.setApiKey(process.env.SHOPPING_LIST_MAIL);
-    const message = {
-        to: email,
+    const transporter = nodemailer.createTransport({
+        service: "gmail",
+        auth: {
+            user: process.env.SENDER_MAIL,
+            pass: process.env.SENDER_PASS,
+        },
+    });
+
+    const details = {
         from: process.env.SENDER_MAIL,
+        to: email,
         subject: "Password Reset Link",
-        text: "Link to reset your password: " + link,
-        html: "<p>Link to reset your password: " + link + "</p>",
+        text: "Password Reset Link: " + link,
+        html:
+            "<h1>Password Reset Link</h1><p>Click on the link to reset your password: <a href=" +
+            link +
+            ">Reset Password</a></p>",
     };
 
-    sgMail
-        .send(message)
-        .then(() => {
-            console.log("Email sent");
-        })
-        .catch((error) => {
-            console.error(error);
-        });
+    transporter.sendMail(details, (err) => {
+        if (err) {
+            console.log(err);
+        } else {
+            console.log("Email sent successfully");
+        }
+    });
 }
-
-module.exports = sendEmail;
