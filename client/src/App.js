@@ -23,19 +23,19 @@ function App() {
 
         const cookies = new Cookie();
         cookies.set("name", res.data.name, {
-            sameSite: "strict",
+            sameSite: "none",
             secure: true,
             httpOnly: true,
             expires: date,
         });
         cookies.set("authToken", authToken, {
-            sameSite: "strict",
+            sameSite: "none",
             secure: true,
             httpOnly: true,
             expires: date,
         });
         cookies.set("userId", res.data._id, {
-            sameSite: "strict",
+            sameSite: "none",
             secure: true,
             httpOnly: true,
             expires: date,
