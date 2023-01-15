@@ -25,19 +25,16 @@ function App() {
         cookies.set("name", res.data.name, {
             sameSite: "none",
             secure: true,
-            httpOnly: true,
             expires: date,
         });
         cookies.set("authToken", authToken, {
             sameSite: "none",
             secure: true,
-            httpOnly: true,
             expires: date,
         });
         cookies.set("userId", res.data._id, {
             sameSite: "none",
             secure: true,
-            httpOnly: true,
             expires: date,
         });
     }
