@@ -1,6 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
+const compression = require("compression");
 const ObjectsToCsv = require("objects-to-csv");
 const fs = require("fs");
 require("dotenv").config();
@@ -13,6 +14,7 @@ const verify = require("./routes/verifyToken");
 
 const app = express();
 
+app.use(compression());
 app.use(cors());
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
