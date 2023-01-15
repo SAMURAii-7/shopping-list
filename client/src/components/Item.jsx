@@ -1,4 +1,4 @@
-import { FaEdit, FaTimes, FaPlus, FaMinus } from "react-icons/fa";
+import { FaTimes, FaPlus, FaMinus, FaPen } from "react-icons/fa";
 import { updateItem } from "../services/itemsServices";
 import Cookies from "universal-cookie";
 
@@ -42,7 +42,7 @@ function Item({
                     </button>
                 )}
                 <button onClick={() => handleEdit(item)} className="edit">
-                    <FaEdit color="rebeccapurple" />
+                    <FaPen color="rebeccapurple" />
                 </button>
                 {handleDelete !== undefined && (
                     <button
