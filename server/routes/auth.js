@@ -65,14 +65,15 @@ router.post("/login", async (req, res) => {
             );
 
             User.findOne({ email: req.body.email }).then((user) => {
+                res.set("Authorization", `Bearer ${accessToken}`);
                 res.json({
                     _id: user._id,
                     name: user.name,
                     email: user.email,
-                    accessToken: accessToken,
                 });
             });
         } else {
+            console.log(err);
             res.status(400).send("Email or password is wrong");
         }
     });
@@ -99,12 +100,20 @@ router.post("/forgot-password", async (req, res) => {
 });
 
 router.post("/reset-password", async (req, res) => {
-    const { id, token } = req.body;
+    const { id } = req.body;
+    const token = req.headers["authorization"];
+    let authToken = "";
+    if (token && token.startsWith("Bearer ")) {
+        const parts = token.split(" ");
+        if (parts.length === 2) {
+            authToken = parts[1];
+        }
+    }
     const user = await User.findOne({ _id: id });
     if (!user) res.status(401).send("Invalid user id");
     const secret = process.env.RESET_PASSWORD_SECRET + user.password;
     try {
-        const payload = jwt.verify(token, secret);
+        const payload = jwt.verify(authToken, secret);
         const { password } = req.body;
         const salt = await bcrypt.genSalt(10);
         const hashPassword = await bcrypt.hash(password, salt);

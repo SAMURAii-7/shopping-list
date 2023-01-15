@@ -1,7 +1,7 @@
 const express = require("express");
 const cors = require("cors");
 const mongoose = require("mongoose");
-const compression = require("compression");
+// const compression = require("compression");
 const ObjectsToCsv = require("objects-to-csv");
 const fs = require("fs");
 require("dotenv").config();
@@ -14,9 +14,17 @@ const verify = require("./routes/verifyToken");
 
 const app = express();
 
-app.use(compression());
-// app.use(cors()) // for development
-app.use(cors({ origin: "https://create-shopping-list.vercel.app" }));
+// app.use(compression());
+app.use(
+    cors({
+        origin: "https://create-shopping-list.vercel.app",
+        methods: ["GET", "POST", "PUT"],
+        allowedHeaders: ["Authorization", "Content-Type"],
+        exposedHeaders: ["Authorization"],
+        credentials: true,
+    })
+); // for development
+// app.use(cors({ origin: "https://create-shopping-list.vercel.app" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
@@ -41,4 +49,9 @@ app.post("/api/export", verify, async (req, res) => {
     });
 });
 
-mongoose.connect(process.env.MONGO_URI, () => console.log("DB connected"));
+mongoose.connect(process.env.MONGO_URI, (err, client) => {
+    if (err) {
+        return console.error(err);
+    }
+    console.log("DB connected");
+});

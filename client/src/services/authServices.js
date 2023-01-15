@@ -1,5 +1,6 @@
 import axios from "axios";
 const apiUrl = "https://shopping-list-backend.up.railway.app/api";
+// const apiUrl = "http://localhost:8080/api";
 
 export async function login(email, password) {
     const res = await axios.post(`${apiUrl}/auth/login`, { email, password });
@@ -27,10 +28,13 @@ export async function forgotPassword(email) {
 }
 
 export async function resetPassword(id, token, password) {
-    const res = await axios.post(`${apiUrl}/auth/reset-password`, {
-        id,
-        token,
-        password,
-    });
+    const res = await axios.post(
+        `${apiUrl}/auth/reset-password`,
+        {
+            id,
+            password,
+        },
+        { headers: { authorization: "Bearer " + token } }
+    );
     return res;
 }

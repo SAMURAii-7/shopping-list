@@ -31,7 +31,7 @@ function Home({ getUserDetails }) {
         try {
             const isLoggedIn = await login(loginData.email, loginData.password);
             if (isLoggedIn.status >= 200 && isLoggedIn.status < 300) {
-                getUserDetails(isLoggedIn.data);
+                getUserDetails(isLoggedIn);
                 navigate("/dashboard");
             }
         } catch (err) {
@@ -49,7 +49,7 @@ function Home({ getUserDetails }) {
                 signupData.password
             );
             if (isSignedUp.status >= 200 && isSignedUp.status < 300) {
-                getUserDetails(isSignedUp.data);
+                getUserDetails(isSignedUp);
                 navigate("/dashboard");
             }
         } catch (err) {

@@ -8,14 +8,38 @@ import Forgot from "./pages/Forgot";
 import Reset from "./pages/Reset";
 
 function App() {
-    function getUserDetails(data) {
+    function getUserDetails(res) {
         let date = new Date();
         date.setDate(date.getDate() + 30);
 
+        const token = res.headers.authorization;
+        let authToken = "";
+        if (typeof token !== "undefined" && token.startsWith("Bearer ")) {
+            const parts = token.split(" ");
+            if (parts.length === 2) {
+                authToken = parts[1];
+            }
+        }
+
         const cookies = new Cookie();
-        cookies.set("name", data.name, { expires: date });
-        cookies.set("authToken", data.accessToken, { expires: date });
-        cookies.set("userId", data._id, { expires: date });
+        cookies.set("name", res.data.name, {
+            sameSite: "strict",
+            secure: true,
+            httpOnly: true,
+            expires: date,
+        });
+        cookies.set("authToken", authToken, {
+            sameSite: "strict",
+            secure: true,
+            httpOnly: true,
+            expires: date,
+        });
+        cookies.set("userId", res.data._id, {
+            sameSite: "strict",
+            secure: true,
+            httpOnly: true,
+            expires: date,
+        });
     }
 
     return (
