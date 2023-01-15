@@ -15,7 +15,8 @@ const verify = require("./routes/verifyToken");
 const app = express();
 
 app.use(compression());
-app.use(cors());
+// app.use(cors()) // for development
+app.use(cors({ origin: "https://create-shopping-list.vercel.app" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
