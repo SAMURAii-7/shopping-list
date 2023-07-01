@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiUrl = "https://shopping-list-backend.up.railway.app/api";
+const apiUrl = "https://shopping-list-tswh.onrender.com/api";
 // const apiUrl = "http://localhost:8080/api";
 
 export async function login(email, password) {
