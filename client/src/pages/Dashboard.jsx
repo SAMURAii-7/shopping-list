@@ -26,7 +26,9 @@ function Dashboard() {
     const cookies = new Cookies();
 
     const scrollToForm = () => {
-        formRef.current.scrollIntoView({ behavior: "smooth" });
+        // formRef.current.scrollIntoView({ behavior: "smooth" });
+        //q: I want it to scroll to the top of the form, but it scrolls to the bottom of the form
+        //a:
     };
 
     const handleSearch = (item) => {
@@ -234,13 +236,12 @@ function Dashboard() {
             <div className="dashboard">
                 <h1 className="welcome">Welcome {cookies.get("name")}</h1>
                 <form
-                    ref={formRef}
                     className="addItem"
                     onSubmit={(e) => {
                         isEdit ? editItem(e) : handleNewItem(e);
                     }}
                 >
-                    <div className="inputDiv">
+                    <div ref={formRef} className="inputDiv">
                         <input
                             onChange={(e) => {
                                 setItemName(e.target.value);
