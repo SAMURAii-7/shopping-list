@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useEffect, useState, useRef } from "react";
 import {
     createItem,
     deleteItem,
@@ -22,7 +22,12 @@ function Dashboard() {
     const [isEdit, setIsEdit] = useState(false);
     const [newItems, setNewItems] = useState([]);
     const [searchedItem, setSearchedItem] = useState({});
+    const formRef = useRef(null);
     const cookies = new Cookies();
+
+    const scrollToForm = () => {
+        formRef.current.scrollIntoView({ behavior: "smooth" });
+    };
 
     const handleSearch = (item) => {
         if (!item.name && searchedItem.name) {
@@ -67,6 +72,7 @@ function Dashboard() {
         setItemQuantity(item.quantity);
         setItemId(item._id);
         setIsEdit(true);
+        scrollToForm();
     };
 
     const handleDelete = async (id) => {
