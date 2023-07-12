@@ -33,8 +33,15 @@ app.use("/api/auth", authRoute);
 app.use("/api/user", userRoute);
 
 const port = process.env.PORT || 8080;
-app.listen(port, () => {
+
+mongoose.connect(process.env.MONGO_URI, (err, client) => {
+    if (err) {
+        return console.error(err);
+    }
+    console.log("DB connected");
+    app.listen(port, () => {
     console.log(`Server running on port ${port}...`);
+});
 });
 
 app.get("/api", (req, res) => {
@@ -47,11 +54,4 @@ app.post("/api/export", verify, async (req, res) => {
     res.download("./items.csv", () => {
         fs.unlinkSync("./items.csv");
     });
-});
-
-mongoose.connect(process.env.MONGO_URI, (err, client) => {
-    if (err) {
-        return console.error(err);
-    }
-    console.log("DB connected");
 });
