@@ -1,5 +1,5 @@
 import axios from "axios";
-const apiUrl = "https://shopping-list-tswh.onrender.com/api";
+const apiUrl = "https://eager-crab-tutu.cyclic.app/api";
 // const apiUrl = "http://localhost:8080/api";
 
 export async function getItems(authToken, userId) {
