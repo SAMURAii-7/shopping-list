@@ -34,15 +34,15 @@ app.use("/api/user", userRoute);
 
 const port = process.env.PORT || 8080;
 
-mongoose.connect(process.env.MONGO_URI, (err, client) => {
-    if (err) {
-        return console.error(err);
+const connectDB = async () => {
+    try {
+        const conn = await mongoose.connect(process.env.MONGO_URI);
+        console.log(`MongoDB Connected: ${conn.connection.host}`);
+    } catch (error) {
+        console.log(error);
+        process.exit(1);
     }
-    console.log("DB connected");
-    app.listen(port, () => {
-    console.log(`Server running on port ${port}...`);
-});
-});
+};
 
 app.get("/api", (req, res) => {
     res.send("Welcome to the server!");
@@ -53,5 +53,11 @@ app.post("/api/export", verify, async (req, res) => {
     await csv.toDisk("./items.csv");
     res.download("./items.csv", () => {
         fs.unlinkSync("./items.csv");
+    });
+});
+
+connectDB().then(() => {
+    app.listen(port, () => {
+        console.log(`Server running on port ${port}...`);
     });
 });
