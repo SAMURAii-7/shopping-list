@@ -234,7 +234,6 @@ function Dashboard() {
             <div className="dashboard">
                 <h1 className="welcome">Welcome {cookies.get("name")}</h1>
                 <form
-                    ref={formRef}
                     className="addItem"
                     onSubmit={(e) => {
                         isEdit ? editItem(e) : handleNewItem(e);
@@ -242,6 +241,7 @@ function Dashboard() {
                 >
                     <div className="inputDiv">
                         <input
+                            ref={formRef}
                             onChange={(e) => {
                                 setItemName(e.target.value);
                             }}
