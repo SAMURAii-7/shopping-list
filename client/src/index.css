@@ -456,6 +456,18 @@ nav ul li {
     background-color: #e2e2e2;
 }
 
+.spinner-div {
+    width: 100%;
+    margin-top: 200px;
+}
+
+.spinner-img {
+    margin-left: 0px;
+    margin-right: 0px;
+    text-align: center;
+}
+
+/* Media Queries */
 @media (max-width: 900px) {
     .title {
         font-size: 3rem;

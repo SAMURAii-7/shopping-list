@@ -2,6 +2,11 @@ import axios from "axios";
 const apiUrl = "https://shopping-list-tswh.onrender.com/api";
 // const apiUrl = "http://localhost:8080/api";
 
+export async function pingApi() {
+    const res = await axios.head(apiUrl);
+    return res;
+}
+
 export async function login(email, password) {
     const res = await axios.post(`${apiUrl}/auth/login`, { email, password });
     return res;

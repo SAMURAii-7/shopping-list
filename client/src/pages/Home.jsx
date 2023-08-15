@@ -1,11 +1,14 @@
-import { login, signup } from "../services/authServices";
-import { useState } from "react";
+import { login, pingApi, signup } from "../services/authServices";
+import { useState, useEffect } from "react";
 import { Link, Navigate, useNavigate } from "react-router-dom";
 import Cookies from "universal-cookie";
+import Spinner from "../components/Spinner";
 
 function Home({ getUserDetails }) {
     let navigate = useNavigate();
     const cookies = new Cookies();
+
+    const [loading, setLoading] = useState(true);
 
     const [signupData, setSignupData] = useState({
         name: "",
@@ -17,6 +20,14 @@ function Home({ getUserDetails }) {
         email: "",
         password: "",
     });
+
+    useEffect(() => {
+        const pingCheck = async () => {
+            const res = await pingApi();
+            if (res.status === 200) setLoading(false);
+        };
+        pingCheck();
+    }, []);
 
     function handleLoginChange(e) {
         setLoginData({ ...loginData, [e.target.id]: e.target.value });
@@ -56,6 +67,10 @@ function Home({ getUserDetails }) {
             alert("Signup failed, Please try again!");
         }
         setSignupData({ name: "", email: "", password: "" });
+    }
+
+    if (loading) {
+        return <Spinner />;
     }
 
     return typeof cookies.get("authToken") == "undefined" ? (
