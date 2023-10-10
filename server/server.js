@@ -23,8 +23,9 @@ app.use(
         exposedHeaders: ["Authorization"],
         credentials: true,
     })
-); // for development
-app.use(cors({ origin: "https://create-shopping-list.vercel.app" }));
+);
+// for development
+// app.use(cors({ origin: "https://create-shopping-list.vercel.app" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
