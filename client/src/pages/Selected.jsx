@@ -15,7 +15,7 @@ const Selected = () => {
         <div className="wrapper">
             <NavBar />
             <div className="selected-wrapper">
-                <h1 className="selected-title">Selected Items</h1>
+                <h1 className="selected-title pt-[30px]">Selected Items</h1>
                 {items.map((item) => (
                     <div key={item._id} className="item">
                         <h3>{item.name}</h3>

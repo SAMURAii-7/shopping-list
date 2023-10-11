@@ -277,7 +277,8 @@ html::-webkit-scrollbar-thumb:active {
 nav ul li {
     display: inline-block;
     list-style: none;
-    margin: 10px 30px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .link {
@@ -536,11 +537,6 @@ nav ul li {
     .link {
         font-size: 11px;
         padding: 5px;
-    }
-
-    nav ul li {
-        margin: 3px;
-        margin-bottom: 10px;
     }
 
     .welcome {

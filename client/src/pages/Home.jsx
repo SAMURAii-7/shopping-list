@@ -12,7 +12,7 @@ const Home = () => {
     return (
         <div className="home-container">
             <HomeNavBar />
-            <h1 className="mt-[70px] text-[2.5rem] text-[#3B0D6A] font-bold max-md:text-[2rem] max-md:text-center">
+            <h1 className="mt-[30px] text-[2.5rem] text-[#3B0D6A] font-bold max-md:text-[2rem] max-md:text-center max-md:mt-[70px]">
                 Simplify your shopping with Shopping List
             </h1>
             <h1 className="mt-[50px] text-[1.5rem] text-[#3B0D6A] font-bold max-md:text-center">

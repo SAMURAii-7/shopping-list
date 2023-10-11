@@ -1,6 +1,6 @@
 import axios from "axios";
-const apiUrl = "https://shopping-list-tswh.onrender.com/api";
-// const apiUrl = "http://localhost:8080/api";
+// const apiUrl = "https://shopping-list-tswh.onrender.com/api";
+const apiUrl = "http://localhost:8080/api";
 
 export async function pingApi() {
     const res = await axios.head(apiUrl);

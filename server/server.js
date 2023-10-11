@@ -17,15 +17,13 @@ const app = express();
 app.use(compression());
 app.use(
     cors({
-        origin: "https://create-shopping-list.vercel.app",
-        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
+        origin: "*",
+        methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH", "HEAD"],
         allowedHeaders: ["Authorization", "Content-Type"],
         exposedHeaders: ["Authorization"],
         credentials: true,
     })
 );
-// for development
-// app.use(cors({ origin: "https://create-shopping-list.vercel.app" }));
 app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 
