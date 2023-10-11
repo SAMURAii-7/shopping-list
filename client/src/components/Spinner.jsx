@@ -9,6 +9,9 @@ function Spinner() {
                 src={spinner}
                 alt="Loading..."
             />
+            <p className="text-center w-full">
+                Please wait for the server to startup...
+            </p>
         </div>
     );
 }
