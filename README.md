@@ -29,3 +29,6 @@ yarn run start
 ```
 yarn run start
 ```
+
+-   Change API url in client/services
+-   Change cors origin to "\*" to allow all origins in server.js

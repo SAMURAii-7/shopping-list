@@ -1,5 +1,8 @@
 @import url("https://fonts.googleapis.com/css2?family=Open+Sans:wght@300&display=swap");
 @import url("https://fonts.googleapis.com/css2?family=Satisfy&display=swap");
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
 
 * {
     box-sizing: border-box;
@@ -15,7 +18,6 @@ body {
     height: 100vh;
     width: 100vw;
     overflow-x: hidden;
-    padding-top: 48px;
 }
 
 /* ScrollBar Start*/
@@ -53,6 +55,15 @@ html::-webkit-scrollbar-thumb:active {
     margin-top: 3rem;
 }
 
+.home-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+}
+
 .container {
     background-color: #f5f5f5;
     border: 1px solid #e2e2e2;
@@ -77,11 +88,13 @@ html::-webkit-scrollbar-thumb:active {
     margin: 0;
     height: 5rem;
 }
+
 .divider2 {
     border-left: 1px solid rgb(182, 175, 175);
     margin: 0;
     height: 5rem;
 }
+
 .or {
     font-size: 1rem;
     margin: 0.5rem;
@@ -104,10 +117,11 @@ html::-webkit-scrollbar-thumb:active {
     padding: 2rem;
 }
 
-.loginForm > * {
+.loginForm>* {
     margin: 0.5rem;
 }
-.loginForm > input {
+
+.loginForm>input {
     padding: 0.5rem;
     border-radius: 5px;
     border: 1px solid rgb(182, 175, 175);
@@ -122,10 +136,11 @@ html::-webkit-scrollbar-thumb:active {
     padding: 2rem;
 }
 
-.signupForm > * {
+.signupForm>* {
     margin: 0.5rem;
 }
-.signupForm > input {
+
+.signupForm>input {
     padding: 0.5rem;
     border-radius: 5px;
     border: 1px solid rgb(182, 175, 175);
@@ -143,11 +158,13 @@ html::-webkit-scrollbar-thumb:active {
     font-weight: bold;
     cursor: pointer;
 }
+
 .btn:hover {
     background-color: rgb(91, 48, 131);
 }
 
 .dashboard {
+    width: 100%;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -174,11 +191,11 @@ html::-webkit-scrollbar-thumb:active {
     width: fit-content;
 }
 
-.addItem > * {
+.addItem>* {
     margin: 0.5rem;
 }
 
-.inputDiv > input {
+.inputDiv>input {
     padding: 0.5rem;
     margin: 0.5rem;
     border-radius: 5px;
@@ -196,6 +213,7 @@ html::-webkit-scrollbar-thumb:active {
     font-weight: bold;
     cursor: pointer;
 }
+
 .addBtn:hover {
     background-color: rgb(91, 48, 131);
 }
@@ -215,7 +233,7 @@ html::-webkit-scrollbar-thumb:active {
     margin-top: 10px;
 }
 
-.items-list > h2 {
+.items-list>h2 {
     margin-bottom: 1rem;
 }
 
@@ -259,7 +277,8 @@ html::-webkit-scrollbar-thumb:active {
 nav ul li {
     display: inline-block;
     list-style: none;
-    margin: 10px 30px;
+    margin-left: 5px;
+    margin-right: 5px;
 }
 
 .link {
@@ -305,13 +324,13 @@ nav ul li {
     margin-top: 5rem;
 }
 
-.error > p {
+.error>p {
     font-size: 2.5rem;
     color: rgb(59, 13, 106);
     margin-bottom: 2rem;
 }
 
-.error > h1 {
+.error>h1 {
     font-size: 2.5rem;
     color: rgb(59, 13, 106);
 }
@@ -320,6 +339,7 @@ nav ul li {
     background-color: rgb(59, 13, 106);
     color: #fff;
 }
+
 .error .link:hover {
     background-color: rgb(91, 48, 131);
 }
@@ -350,11 +370,11 @@ nav ul li {
     padding: 5px;
 }
 
-.item-details > * {
+.item-details>* {
     margin: 3px;
 }
 
-.item-details > h3 {
+.item-details>h3 {
     max-width: 300px;
     white-space: wrap;
 }
@@ -407,11 +427,11 @@ nav ul li {
     align-items: center;
 }
 
-.searchInputs > * {
+.searchInputs>* {
     margin: 0.5rem;
 }
 
-.searchInputs > input {
+.searchInputs>input {
     padding: 0.5rem;
     margin: 0.5rem;
     border-radius: 5px;
@@ -419,7 +439,7 @@ nav ul li {
     width: 15rem;
 }
 
-.searchIcon > svg {
+.searchIcon>svg {
     font-size: 1.6rem;
     color: rgb(59, 13, 106);
 }
@@ -446,13 +466,13 @@ nav ul li {
     cursor: pointer;
 }
 
-.dataResult > p {
+.dataResult>p {
     margin: 2px;
     padding: 5px;
     border-radius: 5px;
 }
 
-.dataResult > p:hover {
+.dataResult>p:hover {
     background-color: #e2e2e2;
 }
 
@@ -473,25 +493,31 @@ nav ul li {
         font-size: 3rem;
         margin: 2rem;
     }
+
     body {
         padding-top: 0;
     }
+
     .container {
         padding: 0;
         width: 300px;
         flex-direction: column;
         margin-top: 0;
     }
+
     .loginForm,
     .signupForm {
         padding: 1rem;
     }
+
     .wrapper {
         width: 400px;
     }
+
     .divider {
         flex-direction: row;
     }
+
     .divider1,
     .divider2 {
         border-left: none;
@@ -499,43 +525,49 @@ nav ul li {
         height: 0;
         width: 5rem;
     }
+
     .dashboardHeader {
         width: 400px;
     }
+
     .siteName {
         font-size: 1.3rem;
     }
+
     .link {
         font-size: 11px;
         padding: 5px;
     }
-    nav ul li {
-        margin: 3px;
-        margin-bottom: 10px;
-    }
+
     .welcome {
         font-size: 2rem;
         margin-top: 3.5rem;
     }
+
     .addItem {
         flex-direction: column;
         width: 350px;
     }
+
     .itemsListHeader {
         font-size: 1.8rem;
     }
+
     .items-list {
         width: 400px;
     }
+
     .item {
         width: 350px;
     }
+
     .selected-div {
         display: grid;
         grid-template-columns: 1fr 1fr;
         width: 350px;
         justify-content: space-evenly;
     }
+
     .selected-link {
         text-align: center;
         font-size: 14px;
@@ -543,17 +575,21 @@ nav ul li {
         padding: 5px 5px;
         margin: 5px;
     }
+
     .selected-title {
         font-size: 2.5rem;
     }
+
     .error {
         width: 400px;
     }
+
     .error h1,
     .error p {
         font-size: 30px;
     }
-    .item-details > h3 {
+
+    .item-details>h3 {
         max-width: 150px;
     }
 }
