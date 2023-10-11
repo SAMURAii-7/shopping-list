@@ -1,11 +1,12 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
-import Home from "./pages/Home";
+import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
 import Cookie from "universal-cookie";
 import Selected from "./pages/Selected";
 import Forgot from "./pages/Forgot";
 import Reset from "./pages/Reset";
+import Home from "./pages/Home";
 
 function App() {
     function getUserDetails(res) {
@@ -42,10 +43,11 @@ function App() {
     return (
         <Router>
             <Routes>
+                <Route exact path="/" element={<Home />} />
                 <Route
                     exact
-                    path="/"
-                    element={<Home getUserDetails={getUserDetails} />}
+                    path="/login"
+                    element={<Login getUserDetails={getUserDetails} />}
                 />
                 <Route exact path="/dashboard" element={<Dashboard />} />
                 <Route exact path="/selected" element={<Selected />} />

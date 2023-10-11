@@ -13,7 +13,7 @@ const NavBar = ({ exportAsCSV }) => {
 
     return (
         <nav className="dashboardHeader">
-            <Link className="siteName" to="/dashboard">
+            <Link className="siteName" to="/">
                 Shopping List
             </Link>
             <ul>
