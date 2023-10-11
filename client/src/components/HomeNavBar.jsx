@@ -2,7 +2,7 @@ import { Link } from "react-router-dom";
 
 const HomeNavBar = () => {
     return (
-        <nav className="bg-[#3B0D6A] flex items-center justify-between w-full py-[10px] px-[20px]">
+        <nav className="fixed top-0 bg-[#3B0D6A] flex items-center justify-between w-full py-[10px] px-[20px]">
             <Link className="siteName" to="/">
                 Shopping List
             </Link>
