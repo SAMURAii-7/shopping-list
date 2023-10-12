@@ -8,7 +8,7 @@ function Home({ getUserDetails }) {
     let navigate = useNavigate();
     const cookies = new Cookies();
 
-    const [loading, setLoading] = useState(false);
+    const [loading, setLoading] = useState(true);
 
     const [signupData, setSignupData] = useState({
         name: "",

@@ -238,7 +238,7 @@ function Dashboard() {
                         isEdit ? editItem(e) : handleNewItem(e);
                     }}
                 >
-                    <div className="inputDiv">
+                    <div className="inputDiv max-md:flex max-md:flex-col max-md:items-center">
                         <input
                             onChange={(e) => {
                                 setItemName(e.target.value);
