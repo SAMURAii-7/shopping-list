@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import {
     createItem,
@@ -14,16 +14,25 @@ import Restricted from "./Restricted";
 import ItemList from "../components/ItemList";
 import NavBar from "../components/NavBar";
 import SearchBar from "../components/SearchBar";
+import Spinner from "../components/Spinner";
+import { pingApi } from "../services/authServices";
 
 function Dashboard() {
-    // const [items, setItems] = useState([]);
-    // const [listItems, setListItems] = useState([]);
+    const [loading, setLoading] = useState(true);
     const [itemName, setItemName] = useState("");
     const [itemQuantity, setItemQuantity] = useState("");
     const [itemId, setItemId] = useState("");
     const [isEdit, setIsEdit] = useState(false);
     const [searchedItem, setSearchedItem] = useState({});
     const cookies = new Cookies();
+
+    useEffect(() => {
+        const pingCheck = async () => {
+            const res = await pingApi();
+            if (res.status === 200) setLoading(false);
+        };
+        pingCheck();
+    }, []);
 
     const queryClient = useQueryClient();
 
@@ -201,6 +210,10 @@ function Dashboard() {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     };
+
+    if (loading) {
+        return <Spinner />;
+    }
 
     if (isItemsPending || isListItemsPending) {
         return <div>Loading...</div>;

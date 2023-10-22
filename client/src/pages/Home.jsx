@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useEffect } from "react";
 import HomeNavBar from "../components/HomeNavBar";
 import createItemGif from "../assets/howto-gifs/CreateItem.gif";
 import addItemGif from "../assets/howto-gifs/AddItem.gif";
@@ -7,8 +7,16 @@ import deleteItemGif from "../assets/howto-gifs/DeleteItem.gif";
 import searchItemGif from "../assets/howto-gifs/SearchItem.gif";
 import exportSelectedGif from "../assets/howto-gifs/ExportSelected.gif";
 import exportAllGif from "../assets/howto-gifs/ExportAll.gif";
+import { pingApi } from "../services/authServices";
 
 const Home = () => {
+    useEffect(() => {
+        const pingCheck = async () => {
+            await pingApi();
+        };
+        pingCheck();
+    }, []);
+
     return (
         <div className="home-container">
             <HomeNavBar />
