@@ -1,28 +1,38 @@
 import { FaTimes, FaPlus, FaMinus, FaPen } from "react-icons/fa";
 import { updateItem } from "../services/itemsServices";
 import Cookies from "universal-cookie";
+import { useQueryClient, useMutation } from "@tanstack/react-query";
 
-function Item({
-    item,
-    handleEdit,
-    handleDelete,
-    handleNewListAdd,
-    handleNewListRemove,
-}) {
+function Item({ item, handleEdit, handleDelete }) {
     const cookies = new Cookies();
+    const queryClient = useQueryClient();
+
+    const { mutate: addRemoveItemToggleMutation } = useMutation({
+        mutationFn: (item) => updateItem(item, cookies.get("authToken")),
+    });
 
     const handleAdd = async (item) => {
         item.isSelected = true;
-        const res = await updateItem(item, cookies.get("authToken"));
-        item = res.data;
-        handleNewListAdd(item);
+        addRemoveItemToggleMutation(item, {
+            onSuccess: () => {
+                queryClient.invalidateQueries([
+                    "items",
+                    cookies.get("authToken"),
+                ]);
+            },
+        });
     };
 
     const handleRemove = async (item) => {
         item.isSelected = false;
-        const res = await updateItem(item, cookies.get("authToken"));
-        item = res.data;
-        handleNewListRemove(item);
+        addRemoveItemToggleMutation(item, {
+            onSuccess: () => {
+                queryClient.invalidateQueries([
+                    "items",
+                    cookies.get("authToken"),
+                ]);
+            },
+        });
     };
 
     return (

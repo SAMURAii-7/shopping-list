@@ -6,7 +6,7 @@ const Selected = () => {
     const location = useLocation();
     let items;
     if (location.state !== null) {
-        items = location.state.newItems;
+        items = location.state.listItems;
     }
 
     return location.state === null ? (

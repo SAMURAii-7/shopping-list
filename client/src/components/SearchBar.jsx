@@ -1,9 +1,10 @@
 import { useState } from "react";
 import { FaSearch, FaTimes } from "react-icons/fa";
 
-function SearchBar({ data, handleSearch }) {
+function SearchBar({ data, setSearchedItem }) {
     const [filteredData, setFilteredData] = useState([]);
     const [wordEntered, setWordEntered] = useState("");
+    const [showOptions, setShowOptions] = useState(false);
 
     const handleFilter = (event) => {
         const searchWord = event.target.value;
@@ -13,8 +14,10 @@ function SearchBar({ data, handleSearch }) {
         });
 
         if (searchWord === "") {
+            setShowOptions(false);
             setFilteredData([]);
         } else {
+            setShowOptions(true);
             setFilteredData(newFilter);
         }
     };
@@ -22,11 +25,12 @@ function SearchBar({ data, handleSearch }) {
     const clearInput = () => {
         setFilteredData([]);
         setWordEntered("");
-        handleSearch({});
+        setSearchedItem({});
     };
 
     const selectSearchedItem = (item) => {
-        handleSearch({
+        setShowOptions(false);
+        setSearchedItem({
             _id: item._id,
             isSelected: item.isSelected,
             name: item.name,
@@ -56,7 +60,7 @@ function SearchBar({ data, handleSearch }) {
                     )}
                 </div>
             </div>
-            {filteredData.length !== 0 && (
+            {filteredData.length !== 0 && showOptions && (
                 <div className="dataResult">
                     {filteredData.map((value) => {
                         return (

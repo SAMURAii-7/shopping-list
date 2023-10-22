@@ -1,4 +1,6 @@
 import { BrowserRouter as Router, Route, Routes } from "react-router-dom";
+import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
+import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import Login from "./pages/Login";
 import Dashboard from "./pages/Dashboard";
 import NotFound from "./pages/NotFound";
@@ -9,6 +11,8 @@ import Reset from "./pages/Reset";
 import Home from "./pages/Home";
 
 function App() {
+    const queryClient = new QueryClient();
+
     function getUserDetails(res) {
         let date = new Date();
         date.setDate(date.getDate() + 30);
@@ -41,25 +45,28 @@ function App() {
     }
 
     return (
-        <Router>
-            <Routes>
-                <Route exact path="/" element={<Home />} />
-                <Route
-                    exact
-                    path="/login"
-                    element={<Login getUserDetails={getUserDetails} />}
-                />
-                <Route exact path="/dashboard" element={<Dashboard />} />
-                <Route exact path="/selected" element={<Selected />} />
-                <Route exact path="/forgot" element={<Forgot />} />
-                <Route
-                    exact
-                    path="reset-password/:id/:token"
-                    element={<Reset />}
-                />
-                <Route exact path="/*" element={<NotFound />} />
-            </Routes>
-        </Router>
+        <QueryClientProvider client={queryClient}>
+            <Router>
+                <Routes>
+                    <Route exact path="/" element={<Home />} />
+                    <Route
+                        exact
+                        path="/login"
+                        element={<Login getUserDetails={getUserDetails} />}
+                    />
+                    <Route exact path="/dashboard" element={<Dashboard />} />
+                    <Route exact path="/selected" element={<Selected />} />
+                    <Route exact path="/forgot" element={<Forgot />} />
+                    <Route
+                        exact
+                        path="reset-password/:id/:token"
+                        element={<Reset />}
+                    />
+                    <Route exact path="/*" element={<NotFound />} />
+                </Routes>
+            </Router>
+            <ReactQueryDevtools initialIsOpen={false} />
+        </QueryClientProvider>
     );
 }
 

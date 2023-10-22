@@ -1,4 +1,5 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
+import { useQueryClient, useMutation, useQuery } from "@tanstack/react-query";
 import {
     createItem,
     deleteItem,
@@ -15,35 +16,60 @@ import NavBar from "../components/NavBar";
 import SearchBar from "../components/SearchBar";
 
 function Dashboard() {
-    const [items, setItems] = useState([]);
+    // const [items, setItems] = useState([]);
+    // const [listItems, setListItems] = useState([]);
     const [itemName, setItemName] = useState("");
     const [itemQuantity, setItemQuantity] = useState("");
     const [itemId, setItemId] = useState("");
     const [isEdit, setIsEdit] = useState(false);
-    const [newItems, setNewItems] = useState([]);
     const [searchedItem, setSearchedItem] = useState({});
     const cookies = new Cookies();
 
+    const queryClient = useQueryClient();
+
+    const { data: items, isPending: isItemsPending } = useQuery({
+        enabled: cookies.get("authToken") !== undefined,
+        queryKey: ["items", cookies.get("authToken")],
+        queryFn: async () => {
+            const res = await getItems(
+                cookies.get("authToken"),
+                cookies.get("userId")
+            );
+            res.sort((a, b) =>
+                a.name.localeCompare(b.name, undefined, {
+                    sensitivity: "base",
+                })
+            );
+            return res;
+        },
+    });
+
+    const { data: listItems, isPending: isListItemsPending } = useQuery({
+        enabled: items !== undefined,
+        queryKey: ["items", cookies.get("authToken"), "listItems"],
+        queryFn: () => {
+            const res = items.filter((item) => item.isSelected);
+            res.sort((a, b) =>
+                a.name.localeCompare(b.name, undefined, {
+                    sensitivity: "base",
+                })
+            );
+            return res;
+        },
+    });
+
+    const { mutate: createItemMutation } = useMutation({
+        mutationFn: (item) => createItem(item, cookies.get("authToken")),
+    });
+    const { mutate: deleteItemMutation } = useMutation({
+        mutationFn: (id) => deleteItem(id, cookies.get("authToken")),
+    });
+    const { mutate: updateItemMutation } = useMutation({
+        mutationFn: (item) => updateItem(item, cookies.get("authToken")),
+    });
+
     const scrollToForm = () => {
         window.scrollTo({ top: 0, behavior: "smooth" });
-    };
-
-    const handleSearch = (item) => {
-        if (!item.name && searchedItem.name) {
-            setItems(
-                [...items, searchedItem].sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-            );
-        } else {
-            const updatedItems = items.filter((i) => i._id !== item._id);
-            setItems(
-                updatedItems.sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-            );
-        }
-        setSearchedItem(item);
     };
 
     const handleNewItem = async (e) => {
@@ -55,15 +81,20 @@ function Dashboard() {
             quantity: itemQuantity,
             isSelected: false,
         };
-        const res = await createItem(newItem, cookies.get("authToken"));
+        createItemMutation(newItem, {
+            onSuccess: () => {
+                queryClient.invalidateQueries([
+                    "items",
+                    cookies.get("authToken"),
+                ]);
+            },
+            onError: (err) => {
+                alert("Error creating item");
+                throw err;
+            },
+        });
         setItemName("");
         setItemQuantity("");
-        setItems(
-            [...items, newItem].sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
-        if (res >= 400) alert("Error creating item");
     };
 
     const handleEdit = (item) => {
@@ -75,44 +106,14 @@ function Dashboard() {
     };
 
     const handleDelete = async (id) => {
-        setItems(
-            items
-                .filter((item) => item._id !== id)
-                .sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-        );
-        await deleteItem(id, cookies.get("authToken"));
-    };
-
-    const handleNewListAdd = (item) => {
-        const newItem = {
-            _id: item._id,
-            name: item.name,
-            quantity: item.quantity,
-        };
-        let arr = [...newItems, newItem];
-        let unique = arr.filter(
-            (v, i, a) =>
-                a.findIndex(
-                    (t) => t.name === v.name && t.quantity === v.quantity
-                ) === i
-        );
-        setNewItems(
-            [...unique].sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
-    };
-
-    const handleNewListRemove = (item) => {
-        setNewItems(
-            newItems
-                .filter((i) => i._id !== item._id)
-                .sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-        );
+        deleteItemMutation(id, {
+            onSuccess: () => {
+                queryClient.invalidateQueries([
+                    "items",
+                    cookies.get("authToken"),
+                ]);
+            },
+        });
     };
 
     const editItem = (e) => {
@@ -120,25 +121,30 @@ function Dashboard() {
         if (searchedItem.name) {
             searchedItem.name = itemName;
             searchedItem.quantity = itemQuantity;
-            updateItem(searchedItem, cookies.get("authToken")).then((res) => {
-                setSearchedItem(res.data);
+            updateItemMutation(searchedItem, {
+                onSuccess: (res) => {
+                    queryClient.invalidateQueries([
+                        "items",
+                        cookies.get("authToken"),
+                    ]);
+                    setSearchedItem(res.data);
+                },
             });
         } else {
-            const updatedItems = items.map((item) => {
+            items.forEach((item) => {
                 if (item._id === itemId) {
                     item.name = itemName;
                     item.quantity = itemQuantity;
-                    updateItem(item, cookies.get("authToken")).then((res) => {
-                        item = res.data;
+                    updateItemMutation(item, {
+                        onSuccess: () => {
+                            queryClient.invalidateQueries([
+                                "items",
+                                cookies.get("authToken"),
+                            ]);
+                        },
                     });
                 }
-                return item;
             });
-            setItems(
-                updatedItems.sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-            );
         }
         setItemName("");
         setItemQuantity("");
@@ -146,65 +152,34 @@ function Dashboard() {
         setIsEdit(false);
     };
 
-    useEffect(() => {
-        async function getItemsList() {
-            const res = await getItems(
-                cookies.get("authToken"),
-                cookies.get("userId")
-            );
-            setItems(
-                res.sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-            );
-            setNewItems(
-                res
-                    .filter((item) => item.isSelected)
-                    .sort((a, b) =>
-                        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                    )
-            );
-        }
-        getItemsList();
-        // eslint-disable-next-line
-    }, []);
-
     const selectAll = () => {
-        const updatedItems = items.map((item) => {
+        items.forEach((item) => {
             item.isSelected = true;
-            updateItem(item, cookies.get("authToken")).then((res) => {
-                item = res.data;
+            updateItemMutation(item, {
+                onSuccess: () => {
+                    queryClient.invalidateQueries([
+                        "items",
+                        cookies.get("authToken"),
+                    ]);
+                },
             });
-            return item;
         });
-        setItems(
-            updatedItems.sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
-        setNewItems(
-            updatedItems.sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
     };
 
     const deselectAll = () => {
-        const updatedItems = items.map((item) => {
+        items.forEach((item) => {
             if (item.isSelected) {
                 item.isSelected = false;
-                updateItem(item, cookies.get("authToken")).then((res) => {
-                    item = res.data;
+                updateItemMutation(item, {
+                    onSuccess: () => {
+                        queryClient.invalidateQueries([
+                            "items",
+                            cookies.get("authToken"),
+                        ]);
+                    },
                 });
             }
-            return item;
         });
-        setItems(
-            updatedItems.sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
-        setNewItems([]);
     };
 
     const exportAsCSV = async (itemsToExport = items) => {
@@ -226,6 +201,10 @@ function Dashboard() {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     };
+
+    if (isItemsPending || isListItemsPending) {
+        return <div>Loading...</div>;
+    }
 
     return typeof cookies.get("authToken") != "undefined" ? (
         <div className="wrapper">
@@ -264,30 +243,28 @@ function Dashboard() {
                         </button>
                     )}
                 </form>
-                <SearchBar data={items} handleSearch={handleSearch} />
+                <SearchBar data={items} setSearchedItem={setSearchedItem} />
                 {searchedItem.name && (
                     <div className="showResults">
                         <ItemList
                             items={[searchedItem]}
-                            handleNewListRemove={handleNewListRemove}
                             handleEdit={handleEdit}
-                            handleNewListAdd={handleNewListAdd}
                             itemListHeading="Search Results"
                         />
                     </div>
                 )}
-                {newItems.length > 0 && (
+                {listItems.length > 0 && (
                     <div className="selected-div">
                         <Link
                             className="selected-link"
                             to="/selected"
-                            state={{ newItems: newItems }}
+                            state={{ listItems: listItems }}
                         >
                             SHOW SELECTED
                         </Link>
                         <button
                             className="selected-link"
-                            onClick={() => exportAsCSV(newItems)}
+                            onClick={() => exportAsCSV(listItems)}
                         >
                             EXPORT SELECTED
                         </button>
@@ -306,12 +283,10 @@ function Dashboard() {
                     </div>
                 )}
                 <ItemList
-                    handleNewListRemove={handleNewListRemove}
                     handleDelete={handleDelete}
                     handleEdit={handleEdit}
-                    handleNewListAdd={handleNewListAdd}
                     items={items}
-                    itemListHeading="Your Items"
+                    itemListHeading={`Your Items (${items.length})`}
                 />
             </div>
         </div>
