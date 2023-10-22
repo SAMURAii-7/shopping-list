@@ -1,10 +1,13 @@
 import { useState } from "react";
 import { Link } from "react-router-dom";
 import Cookies from "universal-cookie";
+import { useLocation } from "react-router-dom";
 
 const NavBar = ({ exportAsCSV }) => {
     const [isActive, setIsActive] = useState(false);
     let cookies = new Cookies();
+
+    const location = useLocation();
 
     const handleLogout = () => {
         cookies.remove("authToken");
@@ -42,14 +45,16 @@ const NavBar = ({ exportAsCSV }) => {
                         Dashboard
                     </Link>
                 </li>
-                <li className="max-md:my-[5px]">
-                    <button
-                        className="text-white p-[5px] hover:bg-white hover:text-inherit hover:rounded-[2px] transition-all max-md:text-[#3B0D6A]"
-                        onClick={() => exportAsCSV()}
-                    >
-                        Export All
-                    </button>
-                </li>
+                {location.pathname === "/dashboard" && (
+                    <li className="max-md:my-[5px]">
+                        <button
+                            className="text-white p-[5px] hover:bg-white hover:text-inherit hover:rounded-[2px] transition-all max-md:text-[#3B0D6A]"
+                            onClick={() => exportAsCSV()}
+                        >
+                            Export All
+                        </button>
+                    </li>
+                )}
                 <li className="max-md:my-[5px]">
                     <Link
                         className="text-white p-[5px] hover:bg-white hover:text-inherit hover:rounded-[2px] transition-all max-md:text-[#3B0D6A]"
