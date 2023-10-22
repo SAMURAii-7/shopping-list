@@ -1,150 +1,98 @@
-import { login, pingApi, signup } from "../services/authServices";
-import { useState, useEffect } from "react";
-import { Link, Navigate, useNavigate } from "react-router-dom";
-import Cookies from "universal-cookie";
-import Spinner from "../components/Spinner";
+import React from "react";
+import HomeNavBar from "../components/HomeNavBar";
+import createItemGif from "../assets/howto-gifs/CreateItem.gif";
+import addItemGif from "../assets/howto-gifs/AddItem.gif";
+import editItemGif from "../assets/howto-gifs/EditItem.gif";
+import deleteItemGif from "../assets/howto-gifs/DeleteItem.gif";
+import searchItemGif from "../assets/howto-gifs/SearchItem.gif";
+import exportSelectedGif from "../assets/howto-gifs/ExportSelected.gif";
+import exportAllGif from "../assets/howto-gifs/ExportAll.gif";
 
-function Home({ getUserDetails }) {
-    let navigate = useNavigate();
-    const cookies = new Cookies();
-
-    const [loading, setLoading] = useState(true);
-
-    const [signupData, setSignupData] = useState({
-        name: "",
-        email: "",
-        password: "",
-    });
-
-    const [loginData, setLoginData] = useState({
-        email: "",
-        password: "",
-    });
-
-    useEffect(() => {
-        const pingCheck = async () => {
-            const res = await pingApi();
-            if (res.status === 200) setLoading(false);
-        };
-        pingCheck();
-    }, []);
-
-    function handleLoginChange(e) {
-        setLoginData({ ...loginData, [e.target.id]: e.target.value });
-    }
-
-    function handleSignupChange(e) {
-        setSignupData({ ...signupData, [e.target.id]: e.target.value });
-    }
-
-    async function handleLoginSubmit(e) {
-        e.preventDefault();
-        try {
-            const isLoggedIn = await login(loginData.email, loginData.password);
-            if (isLoggedIn.status >= 200 && isLoggedIn.status < 300) {
-                getUserDetails(isLoggedIn);
-                navigate("/dashboard");
-            }
-        } catch (err) {
-            alert("Email or Password incorrect! Please try again.");
-        }
-        setLoginData({ email: "", password: "" });
-    }
-
-    async function handleSignupSubmit(e) {
-        e.preventDefault();
-        try {
-            const isSignedUp = await signup(
-                signupData.name,
-                signupData.email,
-                signupData.password
-            );
-            if (isSignedUp.status >= 200 && isSignedUp.status < 300) {
-                getUserDetails(isSignedUp);
-                navigate("/dashboard");
-            }
-        } catch (err) {
-            alert("Signup failed, Please try again!");
-        }
-        setSignupData({ name: "", email: "", password: "" });
-    }
-
-    if (loading) {
-        return <Spinner />;
-    }
-
-    return typeof cookies.get("authToken") == "undefined" ? (
-        <div className="home-wrapper">
-            <h1 className="title">Shopping List</h1>
-            <div className="container">
-                <div className="loginDiv">
-                    <form
-                        className="loginForm"
-                        onSubmit={(e) => handleLoginSubmit(e)}
-                    >
-                        <p>Login</p>
-                        <input
-                            placeholder="Email"
-                            onChange={(e) => handleLoginChange(e)}
-                            type="email"
-                            id="email"
-                            value={loginData.email}
-                        />
-                        <input
-                            placeholder="Password"
-                            onChange={(e) => handleLoginChange(e)}
-                            type="password"
-                            id="password"
-                            value={loginData.password}
-                        />
-                        <button className="btn" type="submit">
-                            Log In
-                        </button>
-                        <Link to="/forgot">Forgot Password</Link>
-                    </form>
+const Home = () => {
+    return (
+        <div className="home-container">
+            <HomeNavBar />
+            <h1 className="mt-[30px] text-[2.5rem] text-[#3B0D6A] font-bold max-md:text-[2rem] max-md:text-center max-md:mt-[70px]">
+                Simplify your shopping with Shopping List
+            </h1>
+            <h1 className="mt-[50px] text-[1.5rem] text-[#3B0D6A] font-bold max-md:text-center">
+                How does Shopping List work?
+            </h1>
+            <div className="flex flex-col items-center">
+                <div className="flex flex-row items-center justify-center p-[20px] max-md:flex-col">
+                    <h2 className="text-2xl text-[#3B0D6A] font-bold w-[300px] m-[20px] max-md:text-lg max-md:text-center">
+                        Create an item to add to your database of items
+                    </h2>
+                    <img
+                        src={createItemGif}
+                        alt="Gif for how to create an item"
+                        className="block max-w-[1000px] max-h-[410px] w-auto h-auto mt-[20px] outline outline-1 outline-[#bcb9b9] rounded-lg max-md:max-w-[350px]"
+                    />
                 </div>
-                <div className="divider">
-                    <div className="divider1"></div>
-                    <div className="or">OR</div>
-                    <div className="divider2"></div>
+                <div className="flex flex-row items-center justify-center p-[20px] max-md:flex-col">
+                    <h2 className="text-2xl text-[#3B0D6A] font-bold w-[300px] m-[20px] max-md:text-lg max-md:text-center">
+                        Add an item to your shopping list or press the same
+                        button again to remove it from your shopping list
+                    </h2>
+                    <img
+                        src={addItemGif}
+                        alt="Gif for how to add an item"
+                        className="block max-w-[1000px] max-h-[373px] w-auto h-auto mt-[20px] outline outline-1 outline-[#bcb9b9] rounded-lg max-md:max-w-[350px]"
+                    />
                 </div>
-                <div className="signupDiv">
-                    <form
-                        className="signupForm"
-                        onSubmit={(e) => handleSignupSubmit(e)}
-                    >
-                        <p>Signup</p>
-                        <input
-                            placeholder="Name"
-                            onChange={(e) => handleSignupChange(e)}
-                            type="text"
-                            id="name"
-                            value={signupData.name}
-                        />
-                        <input
-                            placeholder="Email"
-                            onChange={(e) => handleSignupChange(e)}
-                            type="email"
-                            id="email"
-                            value={signupData.email}
-                        />
-                        <input
-                            placeholder="Password"
-                            onChange={(e) => handleSignupChange(e)}
-                            type="password"
-                            id="password"
-                            value={signupData.password}
-                        />
-                        <button className="btn" type="submit">
-                            Sign Up
-                        </button>
-                    </form>
+                <div className="flex flex-row items-center justify-center p-[20px] max-md:flex-col">
+                    <h2 className="text-2xl text-[#3B0D6A] font-bold w-[300px] m-[20px] max-md:text-lg max-md:text-center">
+                        Edit the item name or quantity
+                    </h2>
+                    <img
+                        src={editItemGif}
+                        alt="Gif for how to edit an item"
+                        className="block max-w-[1000px] max-h-[373px] w-auto h-auto mt-[20px] outline outline-1 outline-[#bcb9b9] rounded-lg max-md:max-w-[350px]"
+                    />
+                </div>
+                <div className="flex flex-row items-center justify-center p-[20px] max-md:flex-col">
+                    <h2 className="text-2xl text-[#3B0D6A] font-bold w-[300px] m-[20px] max-md:text-lg max-md:text-center">
+                        Delete an item from the database
+                    </h2>
+                    <img
+                        src={deleteItemGif}
+                        alt="Gif for how to delete an item"
+                        className="block max-w-[1000px] max-h-[373px] w-auto h-auto mt-[20px] outline outline-1 outline-[#bcb9b9] rounded-lg max-md:max-w-[350px]"
+                    />
+                </div>
+                <div className="flex flex-row items-center justify-center p-[20px] max-md:flex-col">
+                    <h2 className="text-2xl text-[#3B0D6A] font-bold w-[300px] m-[20px] max-md:text-lg max-md:text-center">
+                        Search an item in your database
+                    </h2>
+                    <img
+                        src={searchItemGif}
+                        alt="Gif for how to search an item"
+                        className="block max-w-[1000px] max-h-[373px] w-auto h-auto mt-[20px] outline outline-1 outline-[#bcb9b9] rounded-lg max-md:max-w-[350px]"
+                    />
+                </div>
+                <div className="flex flex-row items-center justify-center p-[20px] max-md:flex-col">
+                    <h2 className="text-2xl text-[#3B0D6A] font-bold w-[300px] m-[20px] max-md:text-lg max-md:text-center">
+                        Export your shopping list to a CSV file
+                    </h2>
+                    <img
+                        src={exportSelectedGif}
+                        alt="Gif for how to export the shopping list"
+                        className="block max-w-[1000px] max-h-[410px] w-auto h-auto mt-[20px] outline outline-1 outline-[#bcb9b9] rounded-lg max-md:max-w-[350px]"
+                    />
+                </div>
+                <div className="flex flex-row items-center justify-center p-[20px] max-md:flex-col">
+                    <h2 className="text-2xl text-[#3B0D6A] font-bold w-[300px] m-[20px] max-md:text-lg max-md:text-center">
+                        Export the entire database of items to a CSV file
+                    </h2>
+                    <img
+                        src={exportAllGif}
+                        alt="Gif for how to export the database of items"
+                        className="block max-w-[1000px] max-h-[410px] w-auto h-auto mt-[20px] outline outline-1 outline-[#bcb9b9] rounded-lg max-md:max-w-[350px]"
+                    />
                 </div>
             </div>
         </div>
-    ) : (
-        <Navigate to="/dashboard" />
     );
-}
+};
 
 export default Home;

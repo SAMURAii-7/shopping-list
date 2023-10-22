@@ -230,7 +230,7 @@ function Dashboard() {
     return typeof cookies.get("authToken") != "undefined" ? (
         <div className="wrapper">
             <NavBar exportAsCSV={exportAsCSV} />
-            <div className="dashboard">
+            <div className="dashboard pt-[60px] max-md:pt-[10px]">
                 <h1 className="welcome">Welcome {cookies.get("name")}</h1>
                 <form
                     className="addItem"
@@ -238,7 +238,7 @@ function Dashboard() {
                         isEdit ? editItem(e) : handleNewItem(e);
                     }}
                 >
-                    <div className="inputDiv">
+                    <div className="inputDiv max-md:flex max-md:flex-col max-md:items-center">
                         <input
                             onChange={(e) => {
                                 setItemName(e.target.value);
