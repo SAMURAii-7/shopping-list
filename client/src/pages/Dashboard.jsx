@@ -28,20 +28,20 @@ function Dashboard() {
         window.scrollTo({ top: 0, behavior: "smooth" });
     };
 
+    const sortArray = (arr) => {
+        return arr.sort((a, b) =>
+            a.name.localeCompare(b.name, undefined, {
+                sensitivity: "base",
+            })
+        );
+    };
+
     const handleSearch = (item) => {
         if (!item.name && searchedItem.name) {
-            setItems(
-                [...items, searchedItem].sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-            );
+            setItems(sortArray([...items, searchedItem]));
         } else {
             const updatedItems = items.filter((i) => i._id !== item._id);
-            setItems(
-                updatedItems.sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-            );
+            setItems(sortArray([updatedItems]));
         }
         setSearchedItem(item);
     };
@@ -58,11 +58,7 @@ function Dashboard() {
         const res = await createItem(newItem, cookies.get("authToken"));
         setItemName("");
         setItemQuantity("");
-        setItems(
-            [...items, newItem].sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
+        setItems(sortArray([...items, newItem]));
         if (res >= 400) alert("Error creating item");
     };
 
@@ -75,13 +71,7 @@ function Dashboard() {
     };
 
     const handleDelete = async (id) => {
-        setItems(
-            items
-                .filter((item) => item._id !== id)
-                .sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-        );
+        setItems(sortArray(items.filter((item) => item._id !== id)));
         await deleteItem(id, cookies.get("authToken"));
     };
 
@@ -98,21 +88,11 @@ function Dashboard() {
                     (t) => t.name === v.name && t.quantity === v.quantity
                 ) === i
         );
-        setNewItems(
-            [...unique].sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
+        setNewItems(sortArray([...unique]));
     };
 
     const handleNewListRemove = (item) => {
-        setNewItems(
-            newItems
-                .filter((i) => i._id !== item._id)
-                .sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-        );
+        setNewItems(sortArray(newItems.filter((i) => i._id !== item._id)));
     };
 
     const editItem = (e) => {
@@ -134,11 +114,7 @@ function Dashboard() {
                 }
                 return item;
             });
-            setItems(
-                updatedItems.sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-            );
+            setItems(sortArray(updatedItems));
         }
         setItemName("");
         setItemQuantity("");
@@ -152,18 +128,8 @@ function Dashboard() {
                 cookies.get("authToken"),
                 cookies.get("userId")
             );
-            setItems(
-                res.sort((a, b) =>
-                    a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                )
-            );
-            setNewItems(
-                res
-                    .filter((item) => item.isSelected)
-                    .sort((a, b) =>
-                        a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-                    )
-            );
+            setItems(sortArray(res));
+            setNewItems(sortArray(res.filter((item) => item.isSelected)));
         }
         getItemsList();
         // eslint-disable-next-line
@@ -177,16 +143,8 @@ function Dashboard() {
             });
             return item;
         });
-        setItems(
-            updatedItems.sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
-        setNewItems(
-            updatedItems.sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
+        setItems(sortArray(updatedItems));
+        setNewItems(sortArray(updatedItems));
     };
 
     const deselectAll = () => {
@@ -199,11 +157,7 @@ function Dashboard() {
             }
             return item;
         });
-        setItems(
-            updatedItems.sort((a, b) =>
-                a.name > b.name ? 1 : b.name > a.name ? -1 : 0
-            )
-        );
+        setItems(sortArray(updatedItems));
         setNewItems([]);
     };
 
