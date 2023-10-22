@@ -3,8 +3,6 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const compression = require("compression");
 const ObjectsToCsv = require("objects-to-csv");
-// const fs = require("fs");
-const AWS = require("aws-sdk");
 require("dotenv").config();
 
 //import routes
@@ -14,8 +12,6 @@ const userRoute = require("./routes/user");
 const verify = require("./routes/verifyToken");
 
 const app = express();
-
-const s3 = new AWS.S3();
 
 app.use(compression());
 app.use(
@@ -51,25 +47,6 @@ app.get("/api", (req, res) => {
 });
 
 app.post("/api/export", verify, async (req, res) => {
-    // const csv = new ObjectsToCsv(req.body);
-    // await s3
-    //     .putObject({
-    //         Body: await csv.toString(),
-    //         Bucket: "cyclic-tiny-tan-piranha-sari-ap-south-1",
-    //         Key: "items.csv",
-    //     })
-    //     .promise();
-    // // await csv.toDisk("./items.csv");
-    // // res.download("./items.csv", () => {
-    // //     fs.unlinkSync("./items.csv");
-    // // });
-    // let my_file = await s3
-    //     .getObject({
-    //         Bucket: "cyclic-tiny-tan-piranha-sari-ap-south-1",
-    //         Key: "items.csv",
-    //     })
-    //     .promise();
-    // res.download(my_file.Body);
     const csv = new ObjectsToCsv(req.body);
     const csvData = await csv.toString();
 
