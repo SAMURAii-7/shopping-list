@@ -1,6 +1,7 @@
 import axios from "axios";
-const apiUrl = "https://shopping-list-tswh.onrender.com/api";
+// const apiUrl = "https://shopping-list-tswh.onrender.com/api";
 // const apiUrl = "http://localhost:8080/api";
+const apiUrl = "https://tiny-tan-piranha-sari.cyclic.app/api";
 
 export async function getItems(authToken, userId) {
     const res = await axios.get(`${apiUrl}/items`, {

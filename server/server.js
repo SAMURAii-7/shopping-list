@@ -3,7 +3,6 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const compression = require("compression");
 const ObjectsToCsv = require("objects-to-csv");
-const fs = require("fs");
 require("dotenv").config();
 
 //import routes
@@ -49,10 +48,14 @@ app.get("/api", (req, res) => {
 
 app.post("/api/export", verify, async (req, res) => {
     const csv = new ObjectsToCsv(req.body);
-    await csv.toDisk("./items.csv");
-    res.download("./items.csv", () => {
-        fs.unlinkSync("./items.csv");
-    });
+    const csvData = await csv.toString();
+
+    // Set the response attachment to specify the download filename
+    res.setHeader("Content-disposition", "attachment; filename=items.csv");
+    res.set("Content-Type", "text/csv");
+
+    // Send the CSV data directly to the client's browser
+    res.send(csvData);
 });
 
 connectDB().then(() => {
