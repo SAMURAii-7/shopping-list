@@ -3,7 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const compression = require("compression");
 const ObjectsToCsv = require("objects-to-csv");
-const fs = require("@cyclic.sh/s3fs")(
+const fs = require("@cyclic.sh/s3fs/promises")(
     "cyclic-tiny-tan-piranha-sari-ap-south-1"
 );
 require("dotenv").config();
