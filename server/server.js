@@ -3,9 +3,8 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const compression = require("compression");
 const ObjectsToCsv = require("objects-to-csv");
-const fs = require("@cyclic.sh/s3fs/promises")(
-    "cyclic-tiny-tan-piranha-sari-ap-south-1"
-);
+// const fs = require("fs");
+const AWS = require("aws-sdk");
 require("dotenv").config();
 
 //import routes
@@ -15,6 +14,8 @@ const userRoute = require("./routes/user");
 const verify = require("./routes/verifyToken");
 
 const app = express();
+
+const s3 = new AWS.S3();
 
 app.use(compression());
 app.use(
@@ -50,11 +51,34 @@ app.get("/api", (req, res) => {
 });
 
 app.post("/api/export", verify, async (req, res) => {
+    // const csv = new ObjectsToCsv(req.body);
+    // await s3
+    //     .putObject({
+    //         Body: await csv.toString(),
+    //         Bucket: "cyclic-tiny-tan-piranha-sari-ap-south-1",
+    //         Key: "items.csv",
+    //     })
+    //     .promise();
+    // // await csv.toDisk("./items.csv");
+    // // res.download("./items.csv", () => {
+    // //     fs.unlinkSync("./items.csv");
+    // // });
+    // let my_file = await s3
+    //     .getObject({
+    //         Bucket: "cyclic-tiny-tan-piranha-sari-ap-south-1",
+    //         Key: "items.csv",
+    //     })
+    //     .promise();
+    // res.download(my_file.Body);
     const csv = new ObjectsToCsv(req.body);
-    await csv.toDisk("test/items.csv");
-    res.download("test/items.csv", () => {
-        fs.unlink("test/items.csv");
-    });
+    const csvData = await csv.toString();
+
+    // Set the response attachment to specify the download filename
+    res.setHeader("Content-disposition", "attachment; filename=items.csv");
+    res.set("Content-Type", "text/csv");
+
+    // Send the CSV data directly to the client's browser
+    res.send(csvData);
 });
 
 connectDB().then(() => {
