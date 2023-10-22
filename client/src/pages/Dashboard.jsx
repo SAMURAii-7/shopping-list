@@ -13,6 +13,8 @@ import Restricted from "./Restricted";
 import ItemList from "../components/ItemList";
 import NavBar from "../components/NavBar";
 import SearchBar from "../components/SearchBar";
+import Spinner from "../components/Spinner";
+import { pingApi } from "../services/authServices";
 
 function Dashboard() {
     const [items, setItems] = useState([]);
@@ -22,6 +24,7 @@ function Dashboard() {
     const [isEdit, setIsEdit] = useState(false);
     const [newItems, setNewItems] = useState([]);
     const [searchedItem, setSearchedItem] = useState({});
+    const [loading, setLoading] = useState(true);
     const cookies = new Cookies();
 
     const scrollToForm = () => {
@@ -131,6 +134,11 @@ function Dashboard() {
             setItems(sortArray(res));
             setNewItems(sortArray(res.filter((item) => item.isSelected)));
         }
+        const pingCheck = async () => {
+            const res = await pingApi();
+            if (res.status === 200) setLoading(false);
+        };
+        pingCheck();
         getItemsList();
         // eslint-disable-next-line
     }, []);
@@ -180,6 +188,10 @@ function Dashboard() {
         document.body.removeChild(link);
         URL.revokeObjectURL(url);
     };
+
+    if (loading) {
+        return <Spinner />;
+    }
 
     return typeof cookies.get("authToken") != "undefined" ? (
         <div className="wrapper">
