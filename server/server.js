@@ -17,7 +17,7 @@ const app = express();
 app.use(compression());
 app.use(
     cors({
-        origin: "https://create-shopping-list.vercel.app",
+        origin: /https:\/\/[A-Za-z0-9-]+\.vercel\.app$/,
         methods: ["GET", "POST", "PUT", "DELETE", "OPTIONS", "PATCH"],
         allowedHeaders: ["Authorization", "Content-Type"],
         exposedHeaders: ["Authorization"],
