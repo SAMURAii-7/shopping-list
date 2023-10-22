@@ -3,7 +3,7 @@ const cors = require("cors");
 const mongoose = require("mongoose");
 const compression = require("compression");
 const ObjectsToCsv = require("objects-to-csv");
-const fs = require("fs");
+const fs = require("@cyclic.sh/s3fs");
 require("dotenv").config();
 
 //import routes
