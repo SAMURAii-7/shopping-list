@@ -53,7 +53,7 @@ app.post("/api/export", verify, async (req, res) => {
     const csv = new ObjectsToCsv(req.body);
     await csv.toDisk("./items.csv");
     res.download("./items.csv", () => {
-        fs.unlinkSync("./items.csv");
+        fs.unlink("./items.csv");
     });
 });
 
