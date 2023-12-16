@@ -44,7 +44,7 @@ function Dashboard() {
             setItems(sortArray([...items, searchedItem]));
         } else {
             const updatedItems = items.filter((i) => i._id !== item._id);
-            setItems(sortArray([updatedItems]));
+            setItems(sortArray(updatedItems));
         }
         setSearchedItem(item);
     };
