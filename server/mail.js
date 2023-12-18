@@ -12,9 +12,7 @@ oauth2Client.setCredentials({ refresh_token: process.env.REFRESH_TOKEN });
 module.exports = function sendEmail(email, link) {
     const accessToken = oauth2Client.getAccessToken();
     const transporter = nodemailer.createTransport({
-        host: "smtp.gmail.com",
-        port: 465,
-        secure: true,
+        service: "gmail",
         auth: {
             type: "OAuth2",
             user: process.env.SENDER_MAIL,
