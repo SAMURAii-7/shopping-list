@@ -1,7 +1,8 @@
 import axios from "axios";
 // const apiUrl = "https://shopping-list-tswh.onrender.com/api";
 // const apiUrl = "http://localhost:8080/api";
-const apiUrl = "https://tiny-tan-piranha-sari.cyclic.app/api";
+// const apiUrl = "https://tiny-tan-piranha-sari.cyclic.app/api";
+const apiUrl = "http://68.233.106.135/api";
 
 export async function pingApi() {
     const res = await axios.head(apiUrl);
