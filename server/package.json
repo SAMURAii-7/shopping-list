@@ -19,7 +19,7 @@
     "scripts": {
         "devStart": "nodemon server.js",
         "start": "node server.js",
-        "prod": "pm2 start server.js"
+        "prod": "pm2 start server.js --name shopping-list"
     },
     "devDependencies": {
         "nodemon": "^2.0.20"
