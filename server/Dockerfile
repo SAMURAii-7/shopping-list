@@ -9,4 +9,4 @@ RUN yarn install
 COPY . .
 
 EXPOSE 8080
-CMD ["pm2-runtime", "--name", "shopping-list", "server.js"]
+CMD ["node", "server.js"]
