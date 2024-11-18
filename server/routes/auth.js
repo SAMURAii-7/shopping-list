@@ -49,11 +49,11 @@ router.post("/register", async (req, res) => {
 router.post("/login", async (req, res) => {
     const validation = loginSchema.validate(req.body);
     if (validation.error)
-        res.status(400).send(validation.error.details[0].message);
+        return res.status(400).send(validation.error.details[0].message);
 
     //check if email exists
     const user = await User.findOne({ email: req.body.email });
-    if (!user) res.status(400).send("Email or password is wrong");
+    if (!user) return res.status(400).send("Email or password is wrong");
 
     //check if password is correct
     bcrypt.compare(req.body.password, user.password, (err, result) => {
