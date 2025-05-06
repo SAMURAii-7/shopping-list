@@ -2,14 +2,14 @@
 
 ## Installation
 
-### For Client Directory
+### Client Directory
 
 ```
 cd client
 yarn install
 ```
 
-### For Server Directory
+### Server Directory
 
 ```
 cd server
@@ -18,13 +18,13 @@ yarn install
 
 ## Running the application
 
-### For running the client locally
+### Run the client locally
 
 ```
 yarn run start
 ```
 
-### For running the server locally
+### Run the server locally
 
 ```
 yarn run start
